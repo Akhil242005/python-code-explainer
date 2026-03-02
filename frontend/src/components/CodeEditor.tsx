@@ -1,28 +1,50 @@
-import Editor from "@monaco-editor/react";
+import { useState } from "react";
 
-type CodeEditorProps = {
-  code: string;
-  onChange: (value: string) => void;
-};
+function CodeInput({ code, setCode }) {
+  const handleChange = (e) => {
+    setCode(e.target.value);
+  };
 
-function CodeEditor({ code, onChange }: CodeEditorProps) {
+  const lines = code.split("\n");
+
   return (
-    <div style={{ height: "400px", border: "1px solid #ddd" }}>
-      <Editor
-        height="100%"
-        language="python"
-        theme="vs-dark"
+    <div style={{ display: "flex" }}>
+      {/* Line Numbers Column */}
+      <div
+        style={{
+          background: "#111",
+          color: "#888",
+          padding: "10px",
+          textAlign: "right",
+          userSelect: "none",
+          borderRight: "1px solid #333",
+        }}
+      >
+        {lines.map((_, index) => (
+          <div key={index}>{index + 1}</div>
+        ))}
+      </div>
+
+      {/* Input Box (UNCHANGED UI FEEL) */}
+      <textarea
         value={code}
-        onChange={(value) => onChange(value ?? "")}
-        options={{
-          fontSize: 14,
-          minimap: { enabled: false },
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
+        onChange={handleChange}
+        placeholder="Type your Python code here..."
+        style={{
+          width: "100%",
+          height: "300px",
+          background: "#0f172a",
+          color: "white",
+          padding: "10px",
+          border: "none",
+          outline: "none",
+          fontFamily: "monospace",
+          fontSize: "14px",
+          resize: "none",
         }}
       />
     </div>
   );
 }
 
-export default CodeEditor;
+export default CodeInput;
